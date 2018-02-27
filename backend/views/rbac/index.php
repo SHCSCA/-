@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
-
-
+use yii\helpers\ArrayHelper;
+//echo '<pre>';print_r($data);die;
 ?>
 <div class="blog-index">
     <?php $form = ActiveForm::begin([
@@ -12,11 +12,12 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <? echo $form->field($model, 'hobby')->checkboxList(['0'=>'篮球','1'=>'足球','2'=>'羽毛球','3'=>'乒乓球']) ?>
+    <?= $form->field($model,'text')->checkboxList(ArrayHelper::map($data,'id','text'))->label('权限列表')?>
+
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('确定', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

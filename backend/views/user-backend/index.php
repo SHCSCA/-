@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\UserBackendSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -47,11 +48,39 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id'=>$model->id], ['class' => "btn btn-xs btn-default",'data-confirm' => '您确定要删除吗']);
                     },
                      'favor' => function ($url, $model, $key) {
-        return Html::a(Html::tag('span', '权限赋予', ['class' => "glyphicon glyphicon-user"]), ['##',
-            'id'=>$model->id], ['class' => "btn btn-xs btn-default",'data-confirm' => '您确定要删除吗']);
+//        return Html::a(Html::tag('span', '权限赋予', ['class' => "glyphicon glyphicon-user"]), ['rbac/list',
+//            'id'=>$model->id], ['class' => "btn btn-xs btn-default"]);
+
+                     return Html::a('权限赋予','index.php?r=rbac/list&id='.$model->id,[
+                             'id' => 'create',
+                             'data-toggle' => 'modal',
+                             'data-target' => '#create-modal',
+                             'class' => 'glyphicon glyphicon-user',
+                         ]);
     }
                 ]
             ],
         ],
     ]); ?>
 </div>
+<?php
+    Modal::begin([
+    'id' => 'create-modal',
+    'header' => '<h4 class="modal-title">权限赋予</h4>',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>',
+    ]);
+    Modal::end();
+    //给按钮添加点击事件
+    $requestUrl = Url::toRoute('rbac/list');
+    $js = <<<JS
+        $(document).on('click', '#create', function () {
+            $.get('{$requestUrl}', {},
+                function (data) {
+                    $('.modal-body').html(data);
+                }  
+            );
+        });
+JS;
+    $this->registerJs($js);
+?>
+

@@ -1,5 +1,6 @@
 <?php
 namespace backend\controllers;
+use backend\models\Item;
 use Yii;
 use yii\web\Controller;
 
@@ -24,11 +25,14 @@ class RbacController extends Controller
     }
 
 
-    public function actionIndex()
+    public function actionList()
     {
-        return $this->render('index', [
+        $model = new Item();
+        $data = Item::find()->all();
+        return $this->renderPartial('index', [
 //            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'data' =>$data,
         ]);
     }
 }
